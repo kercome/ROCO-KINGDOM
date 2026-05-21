@@ -20,6 +20,9 @@ import math
 import heapq
 import os
 from typing import Optional, List, Dict, Tuple, Any
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).parent.parent
 
 # ── 常量 ────────────────────────────────────────────────────
 MAP_WIDTH = 4096
@@ -50,8 +53,7 @@ class PathFinder:
             coord_mapper: coord_mapper 模块引用（可选）
         """
         if aligned_points_path is None:
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-            aligned_points_path = os.path.join(base_dir, "aligned_points.json")
+            aligned_points_path = str(PROJECT_ROOT / "data" / "aligned_points.json")
 
         self.coord_mapper = coord_mapper
         self.areas: List[Dict] = []

@@ -15,9 +15,13 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
-    QPixmap, QImage, QPainter, QColor, QPen, QBrush, QFont
+    QPixmap, QImage, QPainter, QColor, QPen, QBrush, QFont, QRegion
 )
 from PIL import Image
+from pathlib import Path
+
+# 项目根目录
+PROJECT_ROOT = Path(__file__).parent.parent
 
 
 MINIMAP_SIZE = 200
@@ -171,6 +175,28 @@ class OverlayUI(QMainWindow):
         screen = QApplication.primaryScreen().geometry()
         self.move(screen.width() - self.width() - 20, 60)
 
+        # 圆形掩码：切除方形边角，呈现纯圆形雷达 HUD
+        self._apply_circular_mask()
+
+    # ── 圆形掩码 ────────────────────────────────────────────
+    def _apply_circular_mask(self):
+        """使用 QRegion 将窗口裁剪为纯圆形，去除方形边角"""
+        radius = min(self.width(), self.height()) // 2
+        diameter = radius * 2
+        # 创建椭圆/圆形区域
+        mask_region = QRegion(0, 0, diameter, diameter, QRegion.Ellipse)
+        self.setMask(mask_region)
+
+    def showEvent(self, event):
+        """窗口显示时重新应用圆形掩码（应对窗口尺寸变化）"""
+        super().showEvent(event)
+        self._apply_circular_mask()
+
+    def resizeEvent(self, event):
+        """窗口尺寸变化时重新应用圆形掩码"""
+        super().resizeEvent(event)
+        self._apply_circular_mask()
+
     # ── 定时刷新 ────────────────────────────────────────────
     def init_timer(self):
         self.timer = QTimer()
@@ -193,6 +219,23 @@ class OverlayUI(QMainWindow):
         self._follow_timer.start(100)  # 100ms = 高频跟随
         self._game_hwnd = None
         self._last_game_rect = None
+
+    def _ensure_penetration_style(self):
+        """确保窗口具有 WS_EX_TRANSPARENT | WS_EX_LAYERED 样式（鼠标穿透）"""
+        try:
+            import win32gui, win32con
+        except ImportError:
+            return
+        hwnd = int(self.winId())
+        style = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
+        required = win32con.WS_EX_TRANSPARENT | win32con.WS_EX_LAYERED
+        if (style & required) != required:
+            style |= required
+            win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE, style)
+            win32gui.SetWindowPos(
+                hwnd, 0, 0, 0, 0, 0,
+                win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_NOZORDER | win32con.SWP_FRAMECHANGED
+            )
 
     def _follow_game_window(self):
         """通过 win32gui 检测游戏窗口，自动贴附"""

@@ -12,6 +12,9 @@ coord_mapper.py
 
 from PIL import Image
 import os
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).parent.parent
 
 # ── 图像尺寸常量 ─────────────────────────────────────────────
 MAP_WIDTH  = 4096   # 原图宽度（像素）
@@ -45,8 +48,8 @@ def load_map(zoom: float = 1.0) -> Image.Image:
     支持的 zoom 值: 1.0 / 0.75 / 0.5
     返回: PIL.Image.Image 对象
     """
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    pyramid_dir = os.path.join(base_dir, "pyramid")
+    base_dir = PROJECT_ROOT / "assets" / "maps"
+    pyramid_dir = base_dir / "pyramid"
 
     zoom_file_map = {
         1.0:  "zoom_1.0.png",
