@@ -1,0 +1,55 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===== Virtual Environment =====
+venv/
+env/
+ENV/
+.venv
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== 项目本地文件 =====
+*.log
+status.json
+active_route.json
+screenshot*.png
+_screenshot*.png
+
+# ===== 大文件（地图资源）=====
+# 地图原图和金字塔文件体积较大，已从仓库排除
+# 请前往 Release 页面下载，或自行用脚本生成金字塔
+assets/maps/roco_hd_world_map.v3.png
+assets/maps/pyramid/*.png
+
+# ===== 测试输出 =====
+tests/__pycache__/
+tests/*.log
