@@ -243,8 +243,8 @@ class OverlayUI(QMainWindow):
             import win32gui, win32con
         except ImportError:
             return
-        # 尝试多个窗口标题（按优先级）
-        titles = ["洛克王国", "Roco", "TapTap"]
+        # 优先严格匹配，排除自身工具窗口标题
+        titles = ["洛克王国：世界", "洛克王国"]
         self._game_hwnd = None
         for title in titles:
             hwnd = win32gui.FindWindow(None, title)
@@ -252,13 +252,20 @@ class OverlayUI(QMainWindow):
                 self._game_hwnd = hwnd
                 break
         if self._game_hwnd is None:
-            # 模糊匹配：遍历所有顶层窗口寻找含关键词的
+            # 模糊匹配：遍历所有顶层窗口，排除自身工具
             def enum_callback(hwnd, results):
-                if win32gui.IsWindowVisible(hwnd):
-                    text = win32gui.GetWindowText(hwnd)
-                    for kw in ["洛克", "Roco", "Chrome_WidgetWin"]:
-                        if kw in text:
-                            results.append(hwnd)
+                if not win32gui.IsWindowVisible(hwnd):
+                    return
+                text = win32gui.GetWindowText(hwnd)
+                if not text:
+                    return
+                # 排除自身工具窗口
+                if any(ex in text for ex in ["Navigator", "Studio", "VS Code", "PowerShell", "Roco Go"]):
+                    return
+                if "洛克王国：世界" in text:
+                    results.insert(0, hwnd)
+                elif "洛克王国" in text:
+                    results.append(hwnd)
             results = []
             win32gui.EnumWindows(enum_callback, results)
             if results:
@@ -399,7 +406,7 @@ class OverlayUI(QMainWindow):
 
         # 白色内芯
         inner = QGraphicsEllipseItem(mp_x - 2, mp_y - 2, 4, 4)
-        inner.setPen(Qt.NoPen)
+        inner.setPen(QPen(Qt.NoPen))
         inner.setBrush(QBrush(QColor(255, 255, 255, 220)))
         self.scene.addItem(inner)
 

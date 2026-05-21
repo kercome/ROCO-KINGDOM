@@ -47,7 +47,7 @@ class VisionEngine:
             window_title_keywords: 游戏窗口标题关键词列表，默认 ["洛克王国", "Roco"]
         """
         if window_title_keywords is None:
-            window_title_keywords = ["洛克王国", "Roco", "roco"]
+            window_title_keywords = ["洛克王国"]
 
         self.window_title_keywords = window_title_keywords
         self.game_window = None
@@ -182,7 +182,7 @@ class VisionEngine:
                 break
 
         if target_window is None:
-            print("[VisionEngine] 未找到游戏窗口 (包含 '洛克王国' 或 'Roco')")
+            print("[VisionEngine] 未找到游戏窗口 (包含 '洛克王国')")
             self.game_window = None
             self.window_hwnd = None
             self.window_rect = None
