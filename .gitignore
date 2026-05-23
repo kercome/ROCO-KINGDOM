@@ -53,3 +53,17 @@ assets/maps/pyramid/*.png
 # ===== 测试输出 =====
 tests/__pycache__/
 tests/*.log
+
+# ===== 临时脚本（Agent 补丁脚本） =====
+scripts/_*.py
+scripts/_*.png
+
+# ===== 旧版工作区 =====
+Roco_Navigation_Tool_Workspace/
+
+# ===== 全量代码快照 =====
+all_code.txt
+
+# ===== 副本文件 =====
+src/*副本*
+src/*overlay_ui - *
