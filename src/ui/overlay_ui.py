@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 overlay_ui.py — PyQt5 纯净版半透明叠加窗口
-1. 移除多余文字面板，仅保留高清雷达小地图。
-2. 支持边缘任意缩放、全窗口随意拖拽。
-3. 最小尺寸限制 2.5cm * 2.5cm (96x96 px)。
+
+Features:
+1. Clean radar minimap overlay with no extra text panels
+2. Edge resizing and full-window dragging support
+3. Minimum size limit: 2.5cm x 2.5cm (96x96 px at 96 DPI)
 """
 
 import sys
@@ -21,7 +23,7 @@ from PyQt5.QtGui import (
 from pathlib import Path
 
 # 项目根目录
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 MAP_WIDTH = 4096
 MAP_HEIGHT = 4096
 RESIZE_MARGIN = 12  # 窗口边缘可拖拽缩放的热区宽度（px）
