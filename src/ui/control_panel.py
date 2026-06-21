@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-# src/control_panel.py
+"""
+control_panel.py — Roco Navigation Control Panel
+
+Modern dual-theme control panel with:
+- Game window connection management
+- Target point selection and route planning
+- Display toggle controls (radar, route, info panel)
+- Map editor studio for waypoint development
+"""
+
 import os
 import json
 import numpy as np
@@ -13,14 +22,14 @@ from PyQt5.QtWidgets import (
     QGraphicsPolygonItem, QInputDialog, QMessageBox,
     QSlider, QFileDialog, QDialog, QScrollArea
 )
-from capture_engine import CaptureEngine
-from vision_matcher import VisionMatcher
-from point_detector import PointDetector
-from vision_engine import VisionEngine
-from roi_selector import ROISelector
+from src.services.capture_engine import CaptureEngine
+from src.services.vision_matcher import VisionMatcher
+from src.core.point_detector import PointDetector
+from src.services.vision_engine import VisionEngine
+from src.ui.roi_selector import ROISelector
 
 # 项目根路径
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 DEFAULT_MAP_PATH = PROJECT_ROOT / "assets" / "maps" / "roco_hd_world_map.v3.png"
 CONFIG_PATH = PROJECT_ROOT / "data" / "custom_points.json"
 
